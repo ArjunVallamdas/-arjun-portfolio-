@@ -1,0 +1,170 @@
+import os
+import zipfile
+
+# Set up directory paths again after reset
+base_dir = "/mnt/data/arjun_portfolio"
+assets_dir = os.path.join(base_dir, "assets/images")
+os.makedirs(assets_dir, exist_ok=True)
+
+# Personalized index.html
+index_html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arjun Vallamdas | Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Arjun Vallamdas</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>I am a creative and detail-oriented Information Technology student at CMR Technical Campus in Hyderabad, with a strong foundation in programming, web development, and data analysis. I’m passionate about exploring emerging technologies, participating in hackathons, and enhancing user experiences through innovative solutions.</p>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <ul>
+      <li>C, Java, R, Python</li>
+      <li>HTML, CSS, JavaScript</li>
+      <li>React.js, Node.js</li>
+      <li>Scikit-Learn, TensorFlow</li>
+      <li>Software Development, Project Management</li>
+    </ul>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="project">
+      <h3>Health Care Using Machine Learning Techniques</h3>
+      <p>Developed a machine learning model for early disease detection using Python, TensorFlow, and Scikit-Learn. Designed to support healthcare professionals in improving patient diagnosis.</p>
+    </div>
+    <div class="project">
+      <h3>Language Translating Using Python</h3>
+      <p>Created a Python-based language translation tool using Google Translate API and NLP. Developed an intuitive UI for efficient text input and translation.</p>
+    </div>
+    <div class="project">
+      <h3>Gaming Hub Using Web Development</h3>
+      <p>Built an interactive gaming hub using HTML, CSS, JavaScript, React.js, Node.js, and MongoDB. Features include user authentication, real-time leaderboards, and a chat system.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Your Email" required />
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+    <p>Email: <a href="mailto:v.sreepal143@gmail.com">v.sreepal143@gmail.com</a></p>
+    <p>Location: Hyderabad, Telangana, India</p>
+  </section>
+
+  <footer>
+    <p>© 2025 Arjun Vallamdas</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+"""
+
+# style.css remains the same as previous
+style_css = """body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: #fff;
+  margin-left: 1rem;
+  text-decoration: none;
+}
+
+section {
+  padding: 2rem;
+}
+
+.project {
+  margin-bottom: 1.5rem;
+}
+
+form input, form textarea {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #f4f4f4;
+}
+
+@media (max-width: 600px) {
+  nav {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+"""
+
+# JavaScript for contact form alert
+script_js = """document.querySelector("form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  alert("Thank you for your message!");
+});
+"""
+
+# Write files to disk
+with open(os.path.join(base_dir, "index.html"), "w") as f:
+    f.write(index_html)
+
+with open(os.path.join(base_dir, "style.css"), "w") as f:
+    f.write(style_css)
+
+with open(os.path.join(base_dir, "script.js"), "w") as f:
+    f.write(script_js)
+
+# Create ZIP archive
+zip_path = "/mnt/data/arjun_portfolio_website.zip"
+with zipfile.ZipFile(zip_path, 'w') as zipf:
+    for folder, _, files in os.walk(base_dir):
+        for file in files:
+            file_path = os.path.join(folder, file)
+            arcname = os.path.relpath(file_path, base_dir)
+            zipf.write(file_path, arcname=arcname)
+
+zip_path
